@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+}
+
+.container {
+  background: #FFF;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.navigation {
+  width: 200px;
+  height: 100vh;
+  background: #dddddd;
+  border-right: 1px solid #aaaaaa;
+}
+
+.menuItem {
+  width: calc(100% - 20px);
+  display: block;
+  padding: 10px;
+  border-bottom: 1px solid #aaaaaa;
+  &:hover {
+    background: #aaaaaa;
+    cursor: pointer;
+  }
+}
+
+.content {
+  width: 100%;
+}

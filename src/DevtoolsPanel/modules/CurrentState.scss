@@ -1,0 +1,25 @@
+.moduleContainer {
+
+}
+
+.moduleHeader {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  h2 {
+    width: 100%;
+  }
+  .actionButtons {
+    width: 200px;
+    button {
+      padding: 10px 25px;
+      cursor: pointer;
+    }
+  }
+}
+
+.moduleContent {
+  padding: 10px;
+}

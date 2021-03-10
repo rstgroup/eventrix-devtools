@@ -1,0 +1,86 @@
+.moduleContainer {
+
+}
+
+.moduleHeader {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  h2 {
+    width: 100%;
+  }
+  .actionButtons {
+    width: 200px;
+    button {
+      padding: 10px 25px;
+      cursor: pointer;
+    }
+  }
+}
+
+.moduleContent {
+  padding: 10px;
+  display: flex;
+}
+
+.circle {
+  margin-left: 15px;
+  padding: 5px;
+  font-size: 10px;
+  color: #FFFFFF;
+  border-radius: 100%;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  display: inline-block;
+}
+
+.greenCircle {
+  @extend .circle;
+  background: darkgreen;
+}
+
+.redCircle {
+  @extend .circle;
+  background: darkred;
+}
+
+.list {
+  width: 500px;
+  height: calc(100vh - 95px);
+  overflow: auto;
+}
+
+.preview {
+  width: 100%;
+  padding: 10px 20px;
+  height: calc(100vh - 115px);
+  overflow: auto;
+}
+
+.listItem {
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background: #aaaaaa;
+    cursor: pointer;
+  }
+  .name {
+    width: 100%;
+  }
+}
+
+.counters {
+  display: flex;
+  margin-bottom: 15px;
+  div {
+    border: 1px solid #aaaaaa;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 10px;
+  }
+}
