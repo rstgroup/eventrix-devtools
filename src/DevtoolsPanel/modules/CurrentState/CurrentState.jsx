@@ -1,8 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
 import { useEmit, useEventrixState } from 'eventrix/react';
-import styles from './CurrentState.scss';
-import {STATE_FETCH} from "../events";
+import RefreshIcon from '@material-ui/icons/Refresh';
+import StorageIcon from '@material-ui/icons/Storage';
 import ObjectInspector from "react-object-inspector";
+import { STATE_FETCH } from "../../events";
+import ModuleHeader from "../../components/ModuleHeader";
+import Button from '../../components/Button';
+import styles from './CurrentState.scss';
 
 const CurrentState = () => {
     const emit = useEmit();
@@ -11,12 +15,11 @@ const CurrentState = () => {
     useEffect(() => { fetchState() }, [fetchState]);
     return (
         <div className={styles.moduleContainer}>
-            <div className={styles.moduleHeader}>
-                <h2>Current state</h2>
-                <div className={styles.actionButtons}>
-                    <button onClick={fetchState}>Reload state</button>
-                </div>
-            </div>
+            <ModuleHeader icon={<StorageIcon fontSize="medium"/>} title="Current state">
+                <Button onClick={fetchState} kind="secondary">
+                    <RefreshIcon fontSize="small" /> Reload state
+                </Button>
+            </ModuleHeader>
             <div className={styles.moduleContent}>
                 <ObjectInspector data={currentState} />
             </div>
