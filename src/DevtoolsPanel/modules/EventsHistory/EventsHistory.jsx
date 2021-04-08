@@ -3,6 +3,10 @@ import { useEmit, useEventrixState } from 'eventrix/react';
 import styles from './EventsHistory.scss';
 import { EVENTS_HISTORY_FETCH } from "../../events";
 import ObjectInspector from "react-object-inspector";
+import RefreshIcon from '@material-ui/icons/Refresh';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import Button from "../../components/Button";
+import ModuleHeader from "../../components/ModuleHeader";
 
 const EventsHistory = () => {
     const emit = useEmit();
@@ -13,12 +17,11 @@ const EventsHistory = () => {
     useEffect(() => { fetchHistory() }, [fetchHistory]);
     return (
         <div className={styles.moduleContainer}>
-            <div className={styles.moduleHeader}>
-                <h2>Events history</h2>
-                <div className={styles.actionButtons}>
-                    <button onClick={fetchHistory}>Reload history</button>
-                </div>
-            </div>
+            <ModuleHeader icon={<DateRangeIcon fontSize="medium"/>} title="Events history">
+                <Button onClick={fetchHistory} kind="secondary">
+                    <RefreshIcon fontSize="small" /> Reload history
+                </Button>
+            </ModuleHeader>
             <div className={styles.moduleContent}>
                 <div className={styles.list}>
                 {eventsHistory.map((item, index)=> (

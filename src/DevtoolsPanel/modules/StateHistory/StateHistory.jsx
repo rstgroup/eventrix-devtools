@@ -3,6 +3,10 @@ import { useEmit, useEventrixState } from 'eventrix/react';
 import styles from './StateHistory.scss';
 import {STATE_HISTORY_FETCH} from "../../events";
 import ObjectInspector from "react-object-inspector";
+import HistoryIcon from '@material-ui/icons/History';
+import Button from "../../components/Button";
+import ModuleHeader from "../../components/ModuleHeader";
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 const StateHistory = () => {
     const emit = useEmit();
@@ -13,12 +17,11 @@ const StateHistory = () => {
     useEffect(() => { fetchHistory() }, [fetchHistory]);
     return (
         <div className={styles.moduleContainer}>
-            <div className={styles.moduleHeader}>
-                <h2>State history</h2>
-                <div className={styles.actionButtons}>
-                    <button onClick={fetchHistory}>Reload history</button>
-                </div>
-            </div>
+            <ModuleHeader icon={<HistoryIcon fontSize="medium"/>} title="State history">
+                <Button onClick={fetchHistory} kind="secondary">
+                    <RefreshIcon fontSize="small" /> Reload history
+                </Button>
+            </ModuleHeader>
             <div className={styles.moduleContent}>
                 <div className={styles.list}>
                     {stateHistory.map((item, index)=> (

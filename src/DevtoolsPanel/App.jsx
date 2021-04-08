@@ -7,14 +7,16 @@ import Route from "./components/Route";
 import RouteLink from "./components/RouteLink/RouteLink";
 import { ROUTES } from "./constants/routes";
 import StorageIcon from '@material-ui/icons/Storage';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import HistoryIcon from '@material-ui/icons/History';
 
 const App = () => {
     return (
         <div className={styles.container}>
             <div className={styles.navigation}>
-                <RouteLink to={ROUTES.CURRENT_STATE} activeClassName={styles.activeMenuItem} className={styles.menuItem}><StorageIcon fontSize="small"/> CURRENT STATE</RouteLink>
-                <RouteLink to={ROUTES.STATE_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}>STATE HISTORY</RouteLink>
-                <RouteLink to={ROUTES.EVENTS_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}>EVENTS HISTORY</RouteLink>
+                <RouteLink to={ROUTES.CURRENT_STATE} activeClassName={styles.activeMenuItem} className={styles.menuItem}><StorageIcon fontSize="small" /> CURRENT STATE</RouteLink>
+                <RouteLink to={ROUTES.STATE_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}><HistoryIcon fontSize="small" /> STATE HISTORY</RouteLink>
+                <RouteLink to={ROUTES.EVENTS_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}><DateRangeIcon fontSize="small" /> EVENTS HISTORY</RouteLink>
             </div>
             <div className={styles.content}>
                 <Route name={ROUTES.CURRENT_STATE}>
