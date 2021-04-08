@@ -14,6 +14,10 @@ const App = () => {
     return (
         <div className={styles.container}>
             <div className={styles.navigation}>
+                <div className={styles.title}>
+                    <h1>Eventrix</h1>
+                    <div>devtools</div>
+                </div>
                 <RouteLink to={ROUTES.CURRENT_STATE} activeClassName={styles.activeMenuItem} className={styles.menuItem}><StorageIcon fontSize="small" /> CURRENT STATE</RouteLink>
                 <RouteLink to={ROUTES.STATE_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}><HistoryIcon fontSize="small" /> STATE HISTORY</RouteLink>
                 <RouteLink to={ROUTES.EVENTS_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}><DateRangeIcon fontSize="small" /> EVENTS HISTORY</RouteLink>

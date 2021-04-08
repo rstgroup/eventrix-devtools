@@ -67,7 +67,7 @@ module.exports = {
         plugins: [new DirectoryNamedWebpackPlugin(true)],
     },
     devServer: {
-        port: 9000,
+        port: 9010,
         historyApiFallback: true,
         watchOptions: {
             poll: true
