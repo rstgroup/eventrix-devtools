@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useEmit, useEventrixState } from 'eventrix/react';
 import styles from './EventsHistory.scss';
-import {EVENTS_HISTORY_FETCH} from "../events";
+import { EVENTS_HISTORY_FETCH } from "../../events";
 import ObjectInspector from "react-object-inspector";
 
 const EventsHistory = () => {

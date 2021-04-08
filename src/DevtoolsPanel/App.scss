@@ -11,19 +11,34 @@ body {
 .navigation {
   width: 200px;
   height: 100vh;
-  background: #dddddd;
-  border-right: 1px solid #aaaaaa;
+  background: #1b1b1b;
+  border-right: 1px solid #070707;
 }
 
 .menuItem {
   width: calc(100% - 20px);
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   padding: 10px;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #4b4b4b;
+  font-size: 13px;
+  color: #FFFFFF;
+
+  svg {
+    margin-right: 10px;
+  }
+
   &:hover {
-    background: #aaaaaa;
+    background: #2d53a5;
     cursor: pointer;
   }
+}
+
+.activeMenuItem {
+  @extend .menuItem;
+
+  background: #305cc8;
 }
 
 .content {

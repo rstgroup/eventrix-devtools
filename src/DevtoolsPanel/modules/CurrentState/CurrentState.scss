@@ -8,15 +8,16 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  background: #1b1b1b;
+  color: #FFFFFF;
+
   h2 {
+    font-size: 23px;
     width: 100%;
+    margin: 0;
   }
   .actionButtons {
     width: 200px;
-    button {
-      padding: 10px 25px;
-      cursor: pointer;
-    }
   }
 }
 

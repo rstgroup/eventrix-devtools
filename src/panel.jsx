@@ -4,8 +4,11 @@ import { Eventrix } from 'eventrix';
 import { EventrixProvider } from 'eventrix/react';
 import App from './DevtoolsPanel/App';
 import DebuggerService from './DevtoolsPanel/services/debugger';
+import { ROUTES } from "./DevtoolsPanel/constants/routes";
 
-const eventrixInstance = new Eventrix({});
+const eventrixInstance = new Eventrix({
+    currentRoute: ROUTES.CURRENT_STATE,
+});
 const debuggerService = new DebuggerService({ eventrix: eventrixInstance });
 
 
