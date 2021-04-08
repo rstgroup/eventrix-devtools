@@ -6,6 +6,7 @@ import ObjectInspector from "react-object-inspector";
 import { STATE_FETCH } from "../../events";
 import ModuleHeader from "../../components/ModuleHeader";
 import Button from '../../components/Button';
+import AutoRefreshModeButton from "../../components/AutoRefreshModeButton";
 import styles from './CurrentState.scss';
 
 const CurrentState = () => {
@@ -16,6 +17,7 @@ const CurrentState = () => {
     return (
         <div className={styles.moduleContainer}>
             <ModuleHeader icon={<StorageIcon fontSize="medium"/>} title="Current state">
+                <AutoRefreshModeButton type="currentState" />
                 <Button onClick={fetchState} kind="secondary">
                     <RefreshIcon fontSize="small" /> Reload state
                 </Button>

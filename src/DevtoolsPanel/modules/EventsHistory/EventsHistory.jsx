@@ -7,6 +7,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import Button from "../../components/Button";
 import ModuleHeader from "../../components/ModuleHeader";
+import AutoRefreshModeButton from "../../components/AutoRefreshModeButton";
 
 const EventsHistory = () => {
     const emit = useEmit();
@@ -18,6 +19,7 @@ const EventsHistory = () => {
     return (
         <div className={styles.moduleContainer}>
             <ModuleHeader icon={<DateRangeIcon fontSize="medium"/>} title="Events history">
+                <AutoRefreshModeButton type="eventsHistory" />
                 <Button onClick={fetchHistory} kind="secondary">
                     <RefreshIcon fontSize="small" /> Reload history
                 </Button>

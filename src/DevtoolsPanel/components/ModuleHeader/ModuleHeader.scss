@@ -20,6 +20,13 @@
   }
 
   .actionButtons {
-    width: 200px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    button {
+      margin-left: 10px;
+    }
   }
 }
