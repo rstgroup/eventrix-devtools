@@ -2,84 +2,65 @@
 
 }
 
-.moduleHeader {
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  h2 {
-    width: 100%;
-  }
-  .actionButtons {
-    width: 200px;
-  }
-}
-
 .moduleContent {
   padding: 10px;
   display: flex;
 }
 
-.circle {
-  margin-left: 15px;
-  padding: 5px;
-  font-size: 10px;
-  color: #FFFFFF;
-  border-radius: 100%;
-  width: 12px;
-  height: 12px;
-  text-align: center;
-  display: inline-block;
-}
-
-.greenCircle {
-  @extend .circle;
-  background: darkgreen;
-}
-
-.redCircle {
-  @extend .circle;
-  background: darkred;
-}
-
 .list {
-  width: 500px;
-  height: calc(100vh - 95px);
+  width: 600px;
+  height: calc(100vh - 80px);
   overflow: auto;
 }
 
 .preview {
   width: 100%;
-  padding: 10px 20px;
-  height: calc(100vh - 115px);
+  padding: 0 20px;
   overflow: auto;
-  h3 {
-    margin-right: 10px;
-  }
 }
 
 .listItem {
   padding: 10px;
-  border: 1px solid #aaaaaa;
+  border-bottom: 1px solid #c3c3c3;
   display: flex;
   align-items: center;
+
   &:hover {
-    background: #aaaaaa;
+    background: #e1e1e1;
     cursor: pointer;
   }
+
   .name {
     width: 100%;
+    font-size: 12px;
+  }
+
+  .counters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & > div {
+      margin-left: 10px;
+    }
   }
 }
 
-.counters {
+.activeListItem {
+  background: #bcd5ff;
+}
+
+.previewCounters {
   display: flex;
-  margin-bottom: 15px;
-  div {
-    border: 1px solid #aaaaaa;
-    border-radius: 8px;
-    padding: 10px;
+  margin-bottom: 10px;
+
+  & > div {
     margin-right: 10px;
   }
+}
+
+.dataPreview {
+  overflow: auto;
+  max-height: calc(100vh - 215px);
+  padding: 10px;
 }

@@ -60,6 +60,7 @@
     "browser-storage-db": "^1.0.0",
     "eventrix": "^1.11.1",
     "form-schema-validation": "^1.17.4",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-components-form": "^3.8.1",
     "react-dom": "^16.13.1",

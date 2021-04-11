@@ -1,13 +1,24 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useEmit, useEventrixState } from 'eventrix/react';
-import styles from './EventsHistory.scss';
-import { EVENTS_HISTORY_FETCH } from "../../events";
+import classnames from 'classnames';
+import moment from 'moment';
 import ObjectInspector from "react-object-inspector";
+import HistoryIcon from '@material-ui/icons/History';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
+import ListenerIcon from '@material-ui/icons/WifiTethering';
+import TimeIcon from '@material-ui/icons/Schedule';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
+
+import Divider from '@material-ui/core/Divider';
+import { EVENTS_HISTORY_FETCH } from "../../events";
 import Button from "../../components/Button";
 import ModuleHeader from "../../components/ModuleHeader";
 import AutoRefreshModeButton from "../../components/AutoRefreshModeButton";
+import styles from './EventsHistory.scss';
+
 
 const EventsHistory = () => {
     const emit = useEmit();
@@ -26,24 +37,63 @@ const EventsHistory = () => {
             </ModuleHeader>
             <div className={styles.moduleContent}>
                 <div className={styles.list}>
-                {eventsHistory.map((item, index)=> (
-                    <div key={index} onClick={() => setCurrentEvent(item)} className={styles.listItem}>
-                        <div className={styles.name}>{item.name}</div>
-                        <div className={getClassName(item.receiversCount)}>{item.receiversCount}</div>
-                        <div className={getClassName(item.listenersCount)}>{item.listenersCount}</div>
-                    </div>
-                ))}
+                    {eventsHistory.map((item, index)=> (
+                        <div
+                            key={index}
+                            onClick={() => setCurrentEvent(item)}
+                            className={classnames({
+                                [styles.listItem]: true,
+                                [styles.activeListItem]: currentEvent === item,
+                            })}
+                        >
+                            <div className={styles.name}>{item.name}</div>
+                            <div className={styles.counters}>
+                                <Tooltip title="Receivers">
+                                    <Chip
+                                        icon={<ReceiverIcon />}
+                                        size="small"
+                                        label={item.receiversCount || 0}
+                                        variant="outlined"
+                                    />
+                                </Tooltip>
+                                <Tooltip title="Listeners">
+                                    <Chip
+                                        icon={<ListenerIcon />}
+                                        size="small"
+                                        label={item.listenersCount || 0}
+                                        variant="outlined"
+                                    />
+                                </Tooltip>
+                            </div>
+                        </div>
+                    ))}
                 </div>
                 <div className={styles.preview}>
                     {currentEvent &&
-                        <div>
-                            <h3>{currentEvent.name}</h3>
-                            <div className={styles.counters}>
-                                <div>Receivers: {currentEvent.receiversCount}</div>
-                                <div>Listeners: {currentEvent.listenersCount}</div>
-                            </div>
+                    <div>
+                        <h3>{currentEvent.name}</h3>
+                        <div className={styles.previewCounters}>
+                            <Chip
+                                icon={<ReceiverIcon />}
+                                label={`Receivers: ${currentEvent.receiversCount || 0}`}
+                                variant="outlined"
+                            />
+                            <Chip
+                                icon={<ListenerIcon />}
+                                label={`Listeners: ${currentEvent.listenersCount || 0}`}
+                                variant="outlined"
+                            />
+                            <Chip
+                                icon={<TimeIcon />}
+                                label={`Time: ${moment(currentEvent.timestamp || 0).format('HH:mm:ss')}`}
+                                variant="outlined"
+                            />
+                        </div>
+                        <Divider />
+                        <div className={styles.dataPreview}>
                             <ObjectInspector data={currentEvent.data} />
                         </div>
+                    </div>
                     }
                 </div>
             </div>
