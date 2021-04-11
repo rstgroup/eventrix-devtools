@@ -104,8 +104,8 @@ class DebuggerService {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.getAllEventsReceiversCount()`,
-                (result = {}, isException) => {
-                    resolve(result);
+                (result = [], isException) => {
+                    resolve(result || []);
                 }
             );
         })
@@ -116,8 +116,8 @@ class DebuggerService {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.getAllEventsListenersCount()`,
-                (result = {}, isException) => {
-                    resolve(result);
+                (result = [], isException) => {
+                    resolve(result || []);
                 }
             );
         })
