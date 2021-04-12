@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useEmit, useEventrixState } from 'eventrix/react';
 import classnames from 'classnames';
-import HistoryIcon from '@material-ui/icons/History';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -21,7 +20,7 @@ const Receivers = () => {
     useEffect(() => { fetchReceivers() }, [fetchReceivers]);
     return (
         <div className={styles.moduleContainer}>
-            <ModuleHeader icon={<HistoryIcon fontSize="medium"/>} title="State history">
+            <ModuleHeader icon={<ReceiverIcon fontSize="medium"/>} title="Receivers">
                 <AutoRefreshModeButton type="receivers" />
                 <Button onClick={fetchReceivers} kind="secondary">
                     <RefreshIcon fontSize="small" /> Reload receivers
