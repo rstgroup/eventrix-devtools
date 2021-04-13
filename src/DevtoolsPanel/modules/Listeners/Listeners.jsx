@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useEmit, useEventrixState } from 'eventrix/react';
 import classnames from 'classnames';
-import HistoryIcon from '@material-ui/icons/History';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ListenerIcon from '@material-ui/icons/WifiTethering';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -21,7 +20,7 @@ const Listeners = () => {
     useEffect(() => { fetchListeners() }, [fetchListeners]);
     return (
         <div className={styles.moduleContainer}>
-            <ModuleHeader icon={<HistoryIcon fontSize="medium"/>} title="State history">
+            <ModuleHeader icon={<ListenerIcon fontSize="medium"/>} title="Listeners">
                 <AutoRefreshModeButton type="receivers" />
                 <Button onClick={fetchListeners} kind="secondary">
                     <RefreshIcon fontSize="small" /> Reload receivers
