@@ -4,11 +4,13 @@ import {
     LISTENERS_FETCH,
     RECEIVERS_FETCH,
     STATE_FETCH,
-    STATE_HISTORY_FETCH,
+    STATE_HISTORY_FETCH, STATE_LISTENERS_FETCH,
     TURN_OFF_AUTO_REFRESH_MODE,
     TURN_ON_AUTO_REFRESH_MODE
 } from "../events";
 import { WINDOW_EVENTRIX_DEBUGGER_NAME } from "../constants";
+import receiversCounts from "../../mockedData/receiversCount";
+import listenersCount from "../../mockedData/listenersCount";
 
 @useEventrix
 class DebuggerService {
@@ -121,6 +123,38 @@ class DebuggerService {
                 }
             );
         })
+    }
+
+    @fetchToState(STATE_LISTENERS_FETCH, 'stateListeners')
+    getStateListeners() {
+        return Promise.all([
+            this.getReceivers(),
+            this.getListeners(),
+        ]).then(([receivers, listeners]) => {
+            const setStateEventsList = {};
+            receivers.forEach(receiver => {
+                if (receiver.eventName.indexOf('setState:') === 0) {
+                    const stateName = listener.eventName.replace('setState:', '');
+                    setStateEventsList[stateName] = {
+                        receivers: receiver.count,
+                    }
+                }
+            });
+            listeners.forEach(listener => {
+                if (listener.eventName.indexOf('setState:') === 0) {
+                    const stateName = listener.eventName.replace('setState:', '');
+                    if (!setStateEventsList[stateName]) {
+                        setStateEventsList[stateName] = {};
+                    }
+                    setStateEventsList[stateName].listeners = listener.count;
+                }
+            });
+            return Object.keys(setStateEventsList).map(stateName => ({
+                stateName,
+                receivers: setStateEventsList[stateName].receivers,
+                listeners: setStateEventsList[stateName].listeners,
+            }));
+        });
     }
 }
 

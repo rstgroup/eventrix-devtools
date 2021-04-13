@@ -1,8 +1,11 @@
 import { useEventrix, fetchToState, receiver } from "eventrix/decorators";
 import {
-    EVENTS_HISTORY_FETCH, LISTENERS_FETCH, RECEIVERS_FETCH,
+    EVENTS_HISTORY_FETCH,
+    LISTENERS_FETCH,
+    RECEIVERS_FETCH,
     STATE_FETCH,
     STATE_HISTORY_FETCH,
+    STATE_LISTENERS_FETCH,
     TURN_OFF_AUTO_REFRESH_MODE,
     TURN_ON_AUTO_REFRESH_MODE
 } from "../../DevtoolsPanel/events";
@@ -78,6 +81,38 @@ class DebuggerService {
     @fetchToState(LISTENERS_FETCH, 'listeners')
     getListeners() {
         return Promise.resolve(listenersCount);
+    }
+
+    @fetchToState(STATE_LISTENERS_FETCH, 'stateListeners')
+    getStateListeners() {
+        return Promise.all([
+            this.getReceivers(),
+            this.getListeners(),
+        ]).then(([receivers, listeners]) => {
+            const setStateEventsList = {};
+            receivers.forEach(receiver => {
+                if (receiver.eventName.indexOf('setState:') === 0) {
+                    const stateName = listener.eventName.replace('setState:', '');
+                    setStateEventsList[stateName] = {
+                        receivers: receiver.count,
+                    }
+                }
+            });
+            listeners.forEach(listener => {
+                if (listener.eventName.indexOf('setState:') === 0) {
+                    const stateName = listener.eventName.replace('setState:', '');
+                    if (!setStateEventsList[stateName]) {
+                        setStateEventsList[stateName] = {};
+                    }
+                    setStateEventsList[stateName].listeners = listener.count;
+                }
+            });
+            return Object.keys(setStateEventsList).map(stateName => ({
+                stateName,
+                receivers: setStateEventsList[stateName].receivers,
+                listeners: setStateEventsList[stateName].listeners,
+            }));
+        });
     }
 }
 

@@ -3,12 +3,12 @@ import { useEmit, useEventrixState } from 'eventrix/react';
 import classnames from 'classnames';
 import moment from 'moment';
 import ObjectInspector from "react-object-inspector";
-import HistoryIcon from '@material-ui/icons/History';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
 import ListenerIcon from '@material-ui/icons/WifiTethering';
 import TimeIcon from '@material-ui/icons/Schedule';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import SettingsRemoteIcon from '@material-ui/icons/SettingsRemote';
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 
@@ -18,6 +18,7 @@ import Button from "../../components/Button";
 import ModuleHeader from "../../components/ModuleHeader";
 import AutoRefreshModeButton from "../../components/AutoRefreshModeButton";
 import styles from './EventsHistory.scss';
+import {getEventsEmitStats} from "./helpers";
 
 
 const EventsHistory = () => {
@@ -95,6 +96,30 @@ const EventsHistory = () => {
                         </div>
                     </div>
                     }
+                </div>
+                <div className={styles.stateStats}>
+                    <h4>Emitted events stats</h4>
+                    <Divider />
+                    <div className={classnames(styles.list, styles.statsList)}>
+                        {getEventsEmitStats(eventsHistory).map((item)=> (
+                            <div
+                                key={item.name}
+                                className={styles.listItem}
+                            >
+                                <div className={styles.name}>{item.name}</div>
+                                <div className={styles.counters}>
+                                    <Tooltip title="Emitted events quantity">
+                                        <Chip
+                                            icon={<SettingsRemoteIcon />}
+                                            size="small"
+                                            label={item.count || 0}
+                                            variant="outlined"
+                                        />
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

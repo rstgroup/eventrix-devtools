@@ -8,7 +8,7 @@
 }
 
 .list {
-  width: 600px;
+  min-width: 400px;
   height: calc(100vh - 80px);
   overflow: auto;
 }
@@ -44,6 +44,20 @@
       margin-left: 10px;
     }
   }
+}
+
+.stateStats {
+  min-width: 400px;
+
+  h4 {
+    margin-bottom: 15px;
+    margin-top: 10px;
+    font-size: 18px;
+  }
+}
+
+.statsList {
+  height: calc(100vh - 126px);
 }
 
 .activeListItem {

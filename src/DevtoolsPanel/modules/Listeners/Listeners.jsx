@@ -15,7 +15,7 @@ import styles from './Listeners.scss';
 
 const Listeners = () => {
     const emit = useEmit();
-    const [stateHistory = []] = useEventrixState('listeners');
+    const [listenersList = []] = useEventrixState('listeners');
     const [currentState, setCurrentState] = useState();
     const fetchListeners = useCallback(() => { emit(LISTENERS_FETCH) }, [emit]);
     useEffect(() => { fetchListeners() }, [fetchListeners]);
@@ -29,7 +29,7 @@ const Listeners = () => {
             </ModuleHeader>
             <div className={styles.moduleContent}>
                 <div className={styles.list}>
-                    {stateHistory.map((item, index)=> (
+                    {listenersList.map((item, index)=> (
                         <div
                             key={index}
                             onClick={() => setCurrentState(item)}

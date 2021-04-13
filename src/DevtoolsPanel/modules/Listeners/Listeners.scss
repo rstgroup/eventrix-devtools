@@ -7,15 +7,15 @@
   display: flex;
 }
 
-.list {
-  width: 600px;
-  height: calc(100vh - 80px);
-  overflow: auto;
-}
-
 .preview {
   width: 100%;
   padding: 0 20px;
+  overflow: auto;
+}
+
+.list {
+  width: 600px;
+  height: calc(100vh - 80px);
   overflow: auto;
 }
 

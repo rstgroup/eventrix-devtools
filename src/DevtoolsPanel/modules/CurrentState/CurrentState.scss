@@ -29,7 +29,58 @@
 }
 
 .moduleContent {
+  display: flex;
   padding: 10px;
   overflow: auto;
   max-height: calc(100vh - 82px);
+}
+
+.statePreview {
+  width: 50%;
+}
+
+.stateListenersList {
+  width: 50%;
+  h4 {
+    margin-bottom: 15px;
+    margin-top: 10px;
+    font-size: 18px;
+  }
+}
+
+.list {
+  width: 100%;
+  height: calc(100vh - 121px);
+  overflow: auto;
+}
+
+.listItem {
+  padding: 10px;
+  border-bottom: 1px solid #c3c3c3;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: #e1e1e1;
+    cursor: pointer;
+  }
+
+  .name {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .counters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & > div {
+      margin-left: 10px;
+    }
+  }
+}
+
+.activeListItem {
+  background: #bcd5ff;
 }

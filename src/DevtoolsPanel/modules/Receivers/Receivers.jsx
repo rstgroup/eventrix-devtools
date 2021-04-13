@@ -15,7 +15,7 @@ import styles from './Receivers.scss';
 
 const Receivers = () => {
     const emit = useEmit();
-    const [stateHistory = []] = useEventrixState('receivers');
+    const [receiversList = []] = useEventrixState('receivers');
     const [currentState, setCurrentState] = useState();
     const fetchReceivers = useCallback(() => { emit(RECEIVERS_FETCH) }, [emit]);
     useEffect(() => { fetchReceivers() }, [fetchReceivers]);
@@ -29,7 +29,7 @@ const Receivers = () => {
             </ModuleHeader>
             <div className={styles.moduleContent}>
                 <div className={styles.list}>
-                    {stateHistory.map((item, index)=> (
+                    {receiversList.map((item, index)=> (
                         <div
                             key={index}
                             onClick={() => setCurrentState(item)}

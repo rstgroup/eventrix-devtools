@@ -18,5 +18,9 @@ export const LISTENERS_FETCH = 'Listeners:fetch';
 export const LISTENERS_FETCH_SUCCESS = 'Listeners:fetch.success';
 export const LISTENERS_FETCH_FAILED = 'Listeners:fetch.failed';
 
+export const STATE_LISTENERS_FETCH = 'StateListeners:fetch';
+export const STATE_LISTENERS_FETCH_SUCCESS = 'StateListeners:fetch.success';
+export const STATE_LISTENERS_FETCH_FAILED = 'StateListeners:fetch.failed';
+
 export const TURN_ON_AUTO_REFRESH_MODE = 'AutoRefreshMode:turnOn';
 export const TURN_OFF_AUTO_REFRESH_MODE = 'AutoRefreshMode:turnOff';
