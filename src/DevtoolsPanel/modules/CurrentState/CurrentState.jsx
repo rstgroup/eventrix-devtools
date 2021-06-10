@@ -20,10 +20,14 @@ const CurrentState = () => {
     const [listenersList = []] = useEventrixState('stateListeners');
     const fetchState = useCallback(() => { emit(STATE_FETCH) }, [emit]);
     const fetchStateListeners = useCallback(() => { emit(STATE_LISTENERS_FETCH) }, [emit]);
-    useEffect(() => {
+    const fetchAll = useCallback(() => {
         fetchState();
         fetchStateListeners();
     }, [fetchState, fetchStateListeners]);
+
+    useEffect(() => {
+        fetchAll()
+    }, [fetchAll]);
     return (
         <div className={styles.moduleContainer}>
             <ModuleHeader icon={<StorageIcon fontSize="medium"/>} title="Current state">

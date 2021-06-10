@@ -9,8 +9,8 @@ import {
     TURN_ON_AUTO_REFRESH_MODE
 } from "../events";
 import { WINDOW_EVENTRIX_DEBUGGER_NAME } from "../constants";
-import receiversCounts from "../../mockedData/receiversCount";
-import listenersCount from "../../mockedData/listenersCount";
+// import receiversCounts from "../../mockedData/receiversCount";
+// import listenersCount from "../../mockedData/listenersCount";
 
 @useEventrix
 class DebuggerService {
@@ -29,6 +29,7 @@ class DebuggerService {
             if (refreshType === 'currentState') {
                 this.autoRefreshHandler[refreshType] = setInterval(() => {
                     this.eventrix.emit(STATE_FETCH);
+                    this.eventrix.emit(STATE_LISTENERS_FETCH);
                 }, 1000);
             }
             if (refreshType === 'stateHistory') {
@@ -134,7 +135,7 @@ class DebuggerService {
             const setStateEventsList = {};
             receivers.forEach(receiver => {
                 if (receiver.eventName.indexOf('setState:') === 0) {
-                    const stateName = listener.eventName.replace('setState:', '');
+                    const stateName = receiver.eventName.replace('setState:', '');
                     setStateEventsList[stateName] = {
                         receivers: receiver.count,
                     }
