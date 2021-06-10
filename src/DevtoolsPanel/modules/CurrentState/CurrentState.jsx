@@ -32,7 +32,7 @@ const CurrentState = () => {
         <div className={styles.moduleContainer}>
             <ModuleHeader icon={<StorageIcon fontSize="medium"/>} title="Current state">
                 <AutoRefreshModeButton type="currentState" />
-                <Button onClick={fetchState} kind="secondary">
+                <Button onClick={fetchAll} kind="secondary">
                     <RefreshIcon fontSize="small" /> Reload state
                 </Button>
             </ModuleHeader>
