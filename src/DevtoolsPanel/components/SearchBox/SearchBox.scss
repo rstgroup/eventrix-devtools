@@ -1,0 +1,29 @@
+.SearchBox {
+  padding: 9px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  .filters {
+    position: relative;
+    margin-left: 10px;
+  }
+
+  .filtersTooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: #ffffff;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    width: 350px;
+    display: none;
+  }
+
+  .opened {
+    display: flex;
+  }
+}

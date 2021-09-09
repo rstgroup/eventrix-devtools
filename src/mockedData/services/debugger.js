@@ -1,4 +1,4 @@
-import { useEventrix, fetchToState, receiver } from "eventrix/decorators";
+import { useEventrix, fetchToState, receiver } from 'eventrix';
 import {
     EVENTS_HISTORY_FETCH,
     LISTENERS_FETCH,
@@ -8,12 +8,12 @@ import {
     STATE_LISTENERS_FETCH,
     TURN_OFF_AUTO_REFRESH_MODE,
     TURN_ON_AUTO_REFRESH_MODE
-} from "../../DevtoolsPanel/events";
-import eventsHistory from "../eventsHistory";
-import stateHistory from "../stateHistory";
-import currentState from "../currentState";
-import receiversCounts from "../receiversCount";
-import listenersCount from "../listenersCount";
+} from '../../DevtoolsPanel/events';
+import eventsHistory from '../eventsHistory';
+import stateHistory from '../stateHistory';
+import currentState from '../currentState';
+import receiversCounts from '../receiversCount';
+import listenersCount from '../listenersCount';
 
 @useEventrix
 class DebuggerService {

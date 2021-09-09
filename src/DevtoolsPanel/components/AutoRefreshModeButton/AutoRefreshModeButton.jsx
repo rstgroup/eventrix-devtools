@@ -1,8 +1,8 @@
 import React, {useCallback} from 'react';
-import { useEventrixState, useEmit } from "eventrix/react";
+import { useEventrixState, useEmit } from 'eventrix';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import Button from "../Button";
-import {TURN_OFF_AUTO_REFRESH_MODE, TURN_ON_AUTO_REFRESH_MODE} from "../../events";
+import Button from '../Button';
+import {TURN_OFF_AUTO_REFRESH_MODE, TURN_ON_AUTO_REFRESH_MODE} from '../../events';
 import styles from './AutoRefreshModeButton.scss';
 
 const AutoRefreshModeButton = ({ type }) => {

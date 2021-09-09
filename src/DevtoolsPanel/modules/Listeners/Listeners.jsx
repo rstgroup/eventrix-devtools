@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import { useEmit, useEventrixState } from 'eventrix/react';
+import { useEmit, useEventrixState } from 'eventrix';
 import classnames from 'classnames';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ListenerIcon from '@material-ui/icons/WifiTethering';

@@ -9,7 +9,11 @@
 
 .list {
   min-width: 400px;
-  height: calc(100vh - 80px);
+}
+
+.listContent {
+  min-width: 400px;
+  height: calc(100vh - 150px);
   overflow: auto;
 }
 

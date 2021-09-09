@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import { useEmit, useEventrixState } from 'eventrix/react';
+import { useEmit, useEventrixState } from 'eventrix';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import StorageIcon from '@material-ui/icons/Storage';
 import ObjectInspector from "react-object-inspector";
