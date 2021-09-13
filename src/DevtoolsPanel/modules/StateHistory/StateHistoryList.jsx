@@ -14,7 +14,7 @@ const StateHistoryList = ({}) => {
     const [currentState, setCurrentState] = useEventrixState('stateHistoryPreview');
     const list = stateHistory.filter((item) => {
         const { search } = stateHistoryFilters;
-        return item.path.includes(search);
+        return item.path.toLowerCase().includes(search.toLowerCase());
     });
     return (
         <div className={styles.listContent}>

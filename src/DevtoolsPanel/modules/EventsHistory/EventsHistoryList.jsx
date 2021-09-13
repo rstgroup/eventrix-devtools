@@ -18,7 +18,7 @@ const EventsHistoryList = ({}) => {
         if (filters.withoutSetStateEvents) {
             matched = item.name.indexOf('setState:') !== 0;
         }
-        return item.name.includes(search) && matched;
+        return item.name.toLowerCase().includes(search.toLowerCase()) && matched;
     });
     return (
         <div className={styles.listContent}>

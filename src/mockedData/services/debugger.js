@@ -60,12 +60,12 @@ class DebuggerService {
 
     @fetchToState(EVENTS_HISTORY_FETCH, 'eventsHistory')
     getEventsHistory() {
-        return Promise.resolve(eventsHistory);
+        return Promise.resolve(eventsHistory.reverse());
     }
 
     @fetchToState(STATE_HISTORY_FETCH, 'stateHistory')
     getStateHistory() {
-        return Promise.resolve(stateHistory);
+        return Promise.resolve(stateHistory.reverse());
     }
 
     @fetchToState(STATE_FETCH, 'currentState')

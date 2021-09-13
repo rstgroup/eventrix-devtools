@@ -1,5 +1,5 @@
 chrome.devtools.panels.create('Eventrix',
-    'images/rcflogo16.png',
+    'images/eventrix_16x16.png',
     'panel.html',
     null
 );

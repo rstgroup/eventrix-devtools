@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Eventrix, EventrixProvider } from 'eventrix';
 import App from './DevtoolsPanel/App';
-// import DebuggerService from './DevtoolsPanel/services/debugger';
-import DebuggerService from './mockedData/services/debugger';
+import DebuggerService from './DevtoolsPanel/services/debugger';
+// import DebuggerService from './mockedData/services/debugger';
 import { ROUTES } from "./DevtoolsPanel/constants/routes";
 
 const eventrixInstance = new Eventrix({
@@ -20,8 +20,8 @@ const eventrixInstance = new Eventrix({
     stateHistoryPreview: null,
     stateHistoryFilters: { search: '' },
 });
-// const debuggerService = new DebuggerService({ eventrix: eventrixInstance });
 const debuggerService = new DebuggerService({ eventrix: eventrixInstance });
+// const debuggerService = new DebuggerService({ eventrix: eventrixInstance });
 
 ReactDOM.render(
     <EventrixProvider eventrix={eventrixInstance}>

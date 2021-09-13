@@ -9,6 +9,7 @@ import {
     TURN_ON_AUTO_REFRESH_MODE
 } from '../events';
 import { WINDOW_EVENTRIX_DEBUGGER_NAME } from '../constants';
+import eventsHistory from "../../mockedData/eventsHistory";
 // import receiversCounts from "../../mockedData/receiversCount";
 // import listenersCount from "../../mockedData/listenersCount";
 
@@ -72,7 +73,7 @@ class DebuggerService {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.eventsHistory`,
                 (result = [], isException) => {
-                    resolve(result);
+                    resolve(result.reverse());
                 }
             );
         })
@@ -84,7 +85,7 @@ class DebuggerService {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.stateHistory`,
                 (result = [], isException) => {
-                    resolve(result);
+                    resolve(result.reverse());
                 }
             );
         })
