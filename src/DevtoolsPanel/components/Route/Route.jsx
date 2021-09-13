@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEventrixState } from "eventrix/react";
+import { useEventrixState } from 'eventrix';
 
 const Route = ({ children, name }) => {
     const [currentRoute] = useEventrixState('currentRoute');

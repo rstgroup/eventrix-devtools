@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useEventrixState } from "eventrix/react";
+import { useEventrixState } from "eventrix";
 
 const RouteLink = ({ children, to, component, className, activeClassName }) => {
     const [currentRoute, setCurrentRoute] = useEventrixState('currentRoute');

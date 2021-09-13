@@ -18,21 +18,21 @@
   "web_accessible_resources": [
     "contentScript.js"
   ],
-  "page_action": {
+  "browser_action": {
     "default_icon": {
-      "16": "images/rcflogo16.png",
-      "32": "images/rcflogo32.png",
-      "48": "images/rcflogo48.png",
-      "64": "images/rcflogo64.png",
-      "128": "images/rcflogo128.png"
+      "16": "images/eventrix_16x16.png",
+      "32": "images/eventrix_32x32.png",
+      "48": "images/eventrix_48x48.png",
+      "64": "images/eventrix_64x64.png",
+      "128": "images/eventrix_128x128.png"
     }
   },
   "icons": {
-    "16": "images/rcflogo16.png",
-    "32": "images/rcflogo32.png",
-    "48": "images/rcflogo48.png",
-    "64": "images/rcflogo64.png",
-    "128": "images/rcflogo128.png"
+    "16": "images/eventrix_16x16.png",
+    "32": "images/eventrix_32x32.png",
+    "48": "images/eventrix_48x48.png",
+    "64": "images/eventrix_64x64.png",
+    "128": "images/eventrix_128x128.png"
   },
   "manifest_version": 2
 }

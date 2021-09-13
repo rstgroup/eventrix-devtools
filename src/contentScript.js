@@ -1,7 +1,7 @@
-const REACT_COMPONENTS_FORM_DEBUGGER_SIGNATURE = 'reactComponentsFormDebugger';
+const EVENTRIX_DEBUGGER_SIGNATURE = 'eventrixDebuggerDevtools';
 
 const sendEventrixDebuggerMessage = (message) => {
-    chrome.runtime.sendMessage({ signature: REACT_COMPONENTS_FORM_DEBUGGER_SIGNATURE, message });
+    chrome.runtime.sendMessage({ signature: EVENTRIX_DEBUGGER_SIGNATURE, message });
 };
 
 chrome.runtime.onMessage.addListener(
