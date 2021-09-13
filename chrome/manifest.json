@@ -18,7 +18,7 @@
   "web_accessible_resources": [
     "contentScript.js"
   ],
-  "page_action": {
+  "browser_action": {
     "default_icon": {
       "16": "images/eventrix_16x16.png",
       "32": "images/eventrix_32x32.png",

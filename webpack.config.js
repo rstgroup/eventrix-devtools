@@ -2,7 +2,7 @@ const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    mode: "development",
+    mode: "production",
     target: 'web',
     entry: {
         panel: "./src/panel.jsx",
