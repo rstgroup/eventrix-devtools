@@ -6,8 +6,6 @@ module.exports = {
     target: 'web',
     entry: {
         panel: "./src/panel.jsx",
-        background: "./src/background.js",
-        contentScript: "./src/contentScript.js",
         devtools: "./src/devtools.js",
     },
     output: {

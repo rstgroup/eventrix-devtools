@@ -3,21 +3,8 @@
   "name": "Eventrix devtools",
   "short_name": "Eventrix devtools",
   "description": "Extension for Eventrix",
-  "background": {
-    "scripts": ["background.js"]
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript.js"],
-      "all_frames": true
-    }
-  ],
-  "permissions": ["notifications", "contextMenus", "tabs", "storage", "<all_urls>", "activeTab", "declarativeContent"],
+  "permissions": [],
   "devtools_page": "devtools.html",
-  "web_accessible_resources": [
-    "contentScript.js"
-  ],
   "browser_action": {
     "default_icon": {
       "16": "images/eventrix_16x16.png",
