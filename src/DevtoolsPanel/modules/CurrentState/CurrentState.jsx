@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useEmit, useEventrixState } from 'eventrix';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import StorageIcon from '@material-ui/icons/Storage';
@@ -25,7 +25,7 @@ const CurrentState = () => {
         fetchStateListeners();
     }, [fetchState, fetchStateListeners]);
 
-    const sortCurrentStateAlphabetically = useCallback(() => {
+    const sortCurrentStateAlphabetically = useMemo(() => {
         const alphabeticallySortedCurrentState = {};
         Object.keys(currentState)
             .sort()
