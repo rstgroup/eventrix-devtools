@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useCallback } from 'react';
 import { useEmit, useEventrixState } from 'eventrix';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import StorageIcon from '@material-ui/icons/Storage';
@@ -13,6 +13,7 @@ import Chip from "@material-ui/core/Chip";
 import ListenerIcon from '@material-ui/icons/WifiTethering';
 import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
 import Divider from "@material-ui/core/Divider";
+import { sortState } from '../../helpers/sortState';
 
 const CurrentState = () => {
     const emit = useEmit();
@@ -24,18 +25,7 @@ const CurrentState = () => {
         fetchState();
         fetchStateListeners();
     }, [fetchState, fetchStateListeners]);
-
-    const sortCurrentStateAlphabetically = useMemo(() => {
-        const alphabeticallySortedCurrentState = {};
-        Object.keys(currentState)
-            .sort()
-            .forEach((state) => {
-                Object.assign(alphabeticallySortedCurrentState, { [state]:  currentState[state]})
-            });
-        return alphabeticallySortedCurrentState;
-    }, [currentState]);
-
-    const alphabeticallySortedCurrentState = sortCurrentStateAlphabetically();
+    const alphabeticallySortedCurrentState = useMemo(() => sortState(currentState), [currentState])
 
     useEffect(() => {
         fetchAll()
