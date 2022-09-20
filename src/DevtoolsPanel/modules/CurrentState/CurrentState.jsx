@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, { useMemo, useEffect, useCallback } from 'react';
 import { useEmit, useEventrixState } from 'eventrix';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import StorageIcon from '@material-ui/icons/Storage';
@@ -13,6 +13,7 @@ import Chip from "@material-ui/core/Chip";
 import ListenerIcon from '@material-ui/icons/WifiTethering';
 import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
 import Divider from "@material-ui/core/Divider";
+import { sortState } from '../../helpers/sortState';
 
 const CurrentState = () => {
     const emit = useEmit();
@@ -24,10 +25,12 @@ const CurrentState = () => {
         fetchState();
         fetchStateListeners();
     }, [fetchState, fetchStateListeners]);
+    const alphabeticallySortedCurrentState = useMemo(() => sortState(currentState), [currentState])
 
     useEffect(() => {
         fetchAll()
     }, [fetchAll]);
+
     return (
         <div className={styles.moduleContainer}>
             <ModuleHeader icon={<StorageIcon fontSize="medium"/>} title="Current state">
@@ -38,7 +41,7 @@ const CurrentState = () => {
             </ModuleHeader>
             <div className={styles.moduleContent}>
                 <div className={styles.statePreview}>
-                    <ObjectInspector data={currentState} />
+                    <ObjectInspector data={alphabeticallySortedCurrentState} />
                 </div>
                 <div className={styles.stateListenersList}>
                     <h4>States that are listening</h4>
