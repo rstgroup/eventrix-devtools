@@ -1,44 +1,70 @@
-import React, { useCallback, useEffect } from 'react';
-import { useEmit } from 'eventrix';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import DateRangeIcon from '@material-ui/icons/DateRange';
+import React, { useEffect } from 'react';
+import { useEventrixState} from 'eventrix';
 
-import { EVENTS_HISTORY_FETCH } from "../../events";
-import Button from "../../components/Button";
-import ModuleHeader from "../../components/ModuleHeader";
-import AutoRefreshModeButton from "../../components/AutoRefreshModeButton";
-import styles from './EventsHistory.scss';
 import SearchBox from "../../components/SearchBox";
-import EventsHistoryList from "./EventsHistoryList";
-import EventsHistoryPreview from "./EventsHistoryPreview";
-import EventsStats from "./EventsStats";
 import Filters from "./Filters";
+import { ListenerIcon, ReceiverIcon } from "../../components/icons";
+import {List, ListItem, ListItemButton, Stack} from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import Tooltip from "@mui/material/Tooltip";
+import Chip from "@mui/material/Chip";
 
-const EventsHistory = () => {
-    const emit = useEmit();
-    const fetchHistory = useCallback(() => { emit(EVENTS_HISTORY_FETCH) }, [emit]);
-    useEffect(() => { fetchHistory() }, [fetchHistory]);
+const EventsHistory = ({ fetchEventsHistory }) => {
+    const [eventsHistory = []] = useEventrixState('eventsHistory');
+    const [eventsHistoryFilters] = useEventrixState('eventsHistoryFilters');
+    const [selectedItem, setItem] = useEventrixState('eventsHistoryPreview');
+    const list = eventsHistory.filter(item => {
+        let matched = true;
+        const { search, filters } = eventsHistoryFilters;
+        if (filters.withoutSetStateEvents) {
+            matched = item.name.indexOf('setState:') !== 0;
+        }
+        return item.name.toLowerCase().includes(search.toLowerCase()) && matched;
+    });
+    useEffect(() => {
+        fetchEventsHistory()
+    }, [fetchEventsHistory]);
     return (
-        <div className={styles.moduleContainer}>
-            <ModuleHeader icon={<DateRangeIcon fontSize="medium"/>} title="Events history">
-                <AutoRefreshModeButton type="eventsHistory" />
-                <Button onClick={fetchHistory} kind="secondary">
-                    <RefreshIcon fontSize="small" /> Reload history
-                </Button>
-            </ModuleHeader>
-            <div className={styles.moduleContent}>
-                <div className={styles.list}>
-                    <SearchBox
-                        label="Event name"
-                        filtersStateName="eventsHistoryFilters"
-                        filters={Filters}
-                    />
-                    <EventsHistoryList />
-                </div>
-                <EventsHistoryPreview />
-                <EventsStats />
-            </div>
-        </div>
+        <Stack width="100%" direction="column">
+            <SearchBox
+                label="Event name"
+                filtersStateName="eventsHistoryFilters"
+                filters={Filters}
+            />
+            <Stack sx={{ maxHeight: "calc(100vh - 126px)", overflowX: "auto" }}>
+                <List>
+                    {list.map((item, index) => (
+                        <ListItem
+                            key={index}
+                            onClick={() => setItem(item)}
+                            disablePadding
+                        >
+                            <ListItemButton selected={selectedItem === item}>
+                                <ListItemText primary={item.name} />
+                                <Stack spacing={1} direction="row">
+                                    <Tooltip title="Receivers">
+                                        <Chip
+                                            icon={<Stack><ReceiverIcon width="15px" /></Stack>}
+                                            size="small"
+                                            label={item.receiversCount || 0}
+                                            variant="outlined"
+                                        />
+                                    </Tooltip>
+                                    <Tooltip title="Listeners">
+                                        <Chip
+                                            icon={<Stack><ListenerIcon width="15px" /></Stack>}
+                                            size="small"
+                                            label={item.listenersCount || 0}
+                                            variant="outlined"
+                                        />
+                                    </Tooltip>
+                                </Stack>
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Stack>
+        </Stack>
     )
 };
 

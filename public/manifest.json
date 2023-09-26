@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "name": "Eventrix devtools",
+  "short_name": "Eventrix devtools",
+  "description": "Extension for Eventrix",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "devtools_page": "devtools.html",
+  "action": {
+    "default_assets/icon": {
+      "16": "assets/eventrix_16x16.png",
+      "32": "assets/eventrix_32x32.png",
+      "48": "assets/eventrix_48x48.png",
+      "64": "assets/eventrix_64x64.png",
+      "128": "assets/eventrix_128x128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/eventrix_16x16.png",
+    "32": "assets/eventrix_32x32.png",
+    "48": "assets/eventrix_48x48.png",
+    "64": "assets/eventrix_64x64.png",
+    "128": "assets/eventrix_128x128.png"
+  },
+  "manifest_version": 3
+}

@@ -1,46 +1,56 @@
 import React from 'react';
-import { useEventrixState } from 'eventrix';
 import moment from 'moment';
-import ObjectInspector from "react-object-inspector";
-import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
-import ListenerIcon from '@material-ui/icons/WifiTethering';
-import TimeIcon from '@material-ui/icons/Schedule';
-import Chip from '@material-ui/core/Chip';
-import Divider from '@material-ui/core/Divider';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import { useEventrixState } from 'eventrix';
+import { ObjectInspector } from "react-inspector";
+import {Stack, Typography, Paper, IconButton} from "@mui/material";
 
-import styles from './StateHistory.scss';
+import {contentStyles, paperStyles} from "./StateHistoryPreview.styles";
+import {CloseIcon, ListenerIcon, ReceiverIcon, TimeIcon} from "../../components/icons";
 
 const StateHistoryPreview = () => {
-    const [currentState] = useEventrixState('stateHistoryPreview');
+    const [currentState, setCurrentState] = useEventrixState('stateHistoryPreview');
+    if (!currentState) {
+        return null;
+    }
     return (
-        <div className={styles.preview}>
-            {currentState &&
-            <div>
-                <h3>{currentState.path}</h3>
-                <div className={styles.previewCounters}>
-                    <Chip
-                        icon={<ReceiverIcon />}
-                        label={`Receivers: ${currentState.receiversCount || 0}`}
-                        variant="outlined"
-                    />
-                    <Chip
-                        icon={<ListenerIcon />}
-                        label={`Listeners: ${currentState.listenersCount || 0}`}
-                        variant="outlined"
-                    />
-                    <Chip
-                        icon={<TimeIcon />}
-                        label={`Time: ${moment(currentState.timestamp || 0).format('HH:mm:ss')}`}
-                        variant="outlined"
-                    />
-                </div>
+        <Stack position="relative" height="50px" width="50px">
+            <Paper sx={paperStyles}>
+                <Stack spacing={2} direction="row" justifyContent="space-between" alignItems="center" paddingX={2} paddingY={1} paddingLeft={1}>
+                    <Stack spacing={1} direction="row" alignItems="center">
+                        <IconButton size="small" onClick={() => setCurrentState(null)}>
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography variant="subtitle2">{currentState.path}</Typography>
+                    </Stack>
+                    <Stack direction="row" spacing={1}>
+                        <Chip
+                            icon={<Stack><ReceiverIcon width="15px" /></Stack>}
+                            label={currentState.receiversCount || 0}
+                            size="small"
+                            variant="outlined"
+                        />
+                        <Chip
+                            icon={<Stack><ListenerIcon width="15px" /></Stack>}
+                            label={currentState.listenersCount || 0}
+                            size="small"
+                            variant="outlined"
+                        />
+                        <Chip
+                            icon={<Stack><TimeIcon width="15px" /></Stack>}
+                            label={moment(currentState.timestamp || 0).format('HH:mm:ss')}
+                            size="small"
+                            variant="outlined"
+                        />
+                    </Stack>
+                </Stack>
                 <Divider />
-                <div className={styles.dataPreview}>
+                <Stack padding={2} sx={contentStyles}>
                     <ObjectInspector data={currentState.state} />
-                </div>
-            </div>
-            }
-        </div>
+                </Stack>
+            </Paper>
+        </Stack>
     )
 };
 
