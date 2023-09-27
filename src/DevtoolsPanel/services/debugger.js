@@ -135,7 +135,7 @@ class DebuggerService {
     }
 
     isJSON = (str) => {
-        if (str.length === 0) return false;
+        if (!str || str.length === 0) return false;
         const firstChar = str[0];
         const lastChar = str[str.length - 1];
         const isObject = firstChar === '{' && lastChar === '}';
@@ -147,9 +147,13 @@ class DebuggerService {
         const parsedEventPayload = this.isJSON(eventPayload) ? JSON.parse(eventPayload) : eventPayload;
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
-                `${WINDOW_EVENTRIX_DEBUGGER_NAME}.eventrix.emit(${eventName}, ${parsedEventPayload})`,
+                `${WINDOW_EVENTRIX_DEBUGGER_NAME}.eventrix.emit('${eventName}', ${eventPayload})`,
                 (result = [], isException) => {
-                    resolve(result || []);
+                    if(isException) {
+                        console.log('error', isException);
+                    } else {
+                        resolve(result || []);
+                    }
                 }
             );
         })

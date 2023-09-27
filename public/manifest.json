@@ -1,10 +1,9 @@
 {
-  "version": "2.0.0",
+  "version": "2.0.1",
   "name": "Eventrix devtools",
   "short_name": "Eventrix devtools",
   "description": "Extension for Eventrix",
   "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["<all_urls>"],
   "devtools_page": "devtools.html",
   "action": {
     "default_assets/icon": {
