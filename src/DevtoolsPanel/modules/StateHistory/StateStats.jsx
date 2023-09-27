@@ -1,42 +1,44 @@
 import React from 'react';
+import Chip from '@mui/material/Chip';
 import { useEventrixState } from 'eventrix';
-import classnames from 'classnames';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import Tooltip from '@material-ui/core/Tooltip';
-import Chip from '@material-ui/core/Chip';
-import Divider from '@material-ui/core/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import {Stack, Typography} from "@mui/material";
 
-import styles from './StateHistory.scss';
 import { getStateUpdateStats } from "./helpers";
+import {RefreshIcon} from "../../components/icons";
+
+const wrapperStyles = {
+    width: "100%",
+    height: "calc(100vh - 145px)",
+    overflowX: "auto"
+}
 
 const StateStats = () => {
     const [stateHistory = []] = useEventrixState('stateHistory');
     return (
-        <div className={styles.stateStats}>
-            <h4>States update stats</h4>
-            <Divider />
-            <div className={classnames(styles.list, styles.statsList)}>
-                {getStateUpdateStats(stateHistory).map((item)=> (
-                    <div
-                        key={item.name}
-                        className={styles.listItem}
-                    >
-                        <div className={styles.name}>{item.stateName}</div>
-                        <div className={styles.counters}>
-                            <Tooltip title="State update quantity">
-                                <Chip
-                                    icon={<RefreshIcon />}
-                                    size="small"
-                                    label={item.count || 0}
-                                    variant="outlined"
-                                />
-                            </Tooltip>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
+        <Stack direction="column" sx={wrapperStyles}>
+            {getStateUpdateStats(stateHistory).map((item)=> (
+                <Stack
+                    key={item.stateName}
+                    direction="row"
+                    justifyContent="space-between"
+                    padding={1}
+                >
+                    <Typography variant="body2">{item.stateName}</Typography>
+                    <Stack direction="row" spacing={1}>
+                        <Tooltip title="State update quantity">
+                            <Chip
+                                icon={<Stack><RefreshIcon width="15px" /></Stack>}
+                                size="small"
+                                label={item.count || 0}
+                                variant="outlined"
+                            />
+                        </Tooltip>
+                    </Stack>
+                </Stack>
+            ))}
+        </Stack>
+    );
 };
 
 export default StateStats;

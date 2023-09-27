@@ -1,21 +1,35 @@
-import { useEventrix, fetchToState, receiver } from 'eventrix';
+import {EventsReceiver, fetchToStateReceiver} from 'eventrix';
 import {
-    EVENTS_HISTORY_FETCH,
+    EMITTER_EMIT,
+    EVENTS_HISTORY_FETCH, EVENTS_HISTORY_RESET,
     LISTENERS_FETCH,
     RECEIVERS_FETCH,
     STATE_FETCH,
-    STATE_HISTORY_FETCH, STATE_LISTENERS_FETCH,
+    STATE_HISTORY_FETCH, STATE_HISTORY_RESET, STATE_LISTENERS_FETCH,
     TURN_OFF_AUTO_REFRESH_MODE,
     TURN_ON_AUTO_REFRESH_MODE
 } from '../events';
-import { WINDOW_EVENTRIX_DEBUGGER_NAME } from '../constants';
-import eventsHistory from "../../mockedData/eventsHistory";
-// import receiversCounts from "../../mockedData/receiversCount";
-// import listenersCount from "../../mockedData/listenersCount";
+import {WINDOW_EVENTRIX_DEBUGGER_NAME} from '../constants';
 
-@useEventrix
 class DebuggerService {
-    constructor() {
+    constructor({ eventrix }) {
+        this.eventrix = eventrix;
+        this.receivers = [
+            new EventsReceiver(TURN_ON_AUTO_REFRESH_MODE, this.turnOnAutoRefreshMode),
+            new EventsReceiver(TURN_OFF_AUTO_REFRESH_MODE, this.turnOffAutoRefreshMode),
+            new EventsReceiver(EMITTER_EMIT, this.emitEvent),
+            fetchToStateReceiver(EVENTS_HISTORY_FETCH, 'eventsHistory', this.getEventsHistory),
+            fetchToStateReceiver(EVENTS_HISTORY_RESET, 'eventsHistory', this.resetEventsHistory),
+            fetchToStateReceiver(STATE_HISTORY_FETCH, 'stateHistory', this.getStateHistory),
+            fetchToStateReceiver(STATE_HISTORY_RESET, 'stateHistory', this.resetStateHistory),
+            fetchToStateReceiver(STATE_FETCH, 'currentState', this.getCurrentState),
+            fetchToStateReceiver(RECEIVERS_FETCH, 'receivers', this.getReceivers),
+            fetchToStateReceiver(LISTENERS_FETCH, 'listeners', this.getListeners),
+            fetchToStateReceiver(STATE_LISTENERS_FETCH, 'stateListeners', this.getStateListeners),
+        ];
+        this.receivers.forEach(receiver => {
+            this.eventrix.useReceiver(receiver);
+        });
         this.autoRefreshHandler = {
             currentState: null,
             stateHistory: null,
@@ -23,9 +37,8 @@ class DebuggerService {
         };
     }
 
-    @receiver(TURN_ON_AUTO_REFRESH_MODE)
-    turnOnAutoRefreshMode(eventName, eventData, stateManager) {
-        const { refreshType } = eventData;
+    turnOnAutoRefreshMode = (eventName, eventData, stateManager) => {
+        const {refreshType} = eventData;
         if (!this.autoRefreshHandler[refreshType]) {
             if (refreshType === 'currentState') {
                 this.autoRefreshHandler[refreshType] = setInterval(() => {
@@ -57,9 +70,8 @@ class DebuggerService {
         stateManager.setState(`autoRefreshMode.${refreshType}`, true);
     }
 
-    @receiver(TURN_OFF_AUTO_REFRESH_MODE)
     turnOffAutoRefreshMode(eventName, eventData, stateManager) {
-        const { refreshType } = eventData;
+        const {refreshType} = eventData;
         if (this.autoRefreshHandler[refreshType]) {
             clearInterval(this.autoRefreshHandler[refreshType]);
             this.autoRefreshHandler[refreshType] = null;
@@ -67,8 +79,7 @@ class DebuggerService {
         stateManager.setState(`autoRefreshMode.${refreshType}`, false);
     }
 
-    @fetchToState(EVENTS_HISTORY_FETCH, 'eventsHistory')
-    getEventsHistory() {
+    getEventsHistory = () => {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.eventsHistory`,
@@ -79,8 +90,7 @@ class DebuggerService {
         })
     }
 
-    @fetchToState(STATE_HISTORY_FETCH, 'stateHistory')
-    getStateHistory() {
+    getStateHistory = () => {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.stateHistory`,
@@ -91,8 +101,7 @@ class DebuggerService {
         })
     }
 
-    @fetchToState(STATE_FETCH, 'currentState')
-    getCurrentState() {
+    getCurrentState = () => {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.getState()`,
@@ -103,8 +112,7 @@ class DebuggerService {
         })
     }
 
-    @fetchToState(RECEIVERS_FETCH, 'receivers')
-    getReceivers() {
+    getReceivers = () => {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.getAllEventsReceiversCount()`,
@@ -115,8 +123,7 @@ class DebuggerService {
         })
     }
 
-    @fetchToState(LISTENERS_FETCH, 'listeners')
-    getListeners() {
+    getListeners = () => {
         return new Promise((resolve) => {
             chrome.devtools.inspectedWindow.eval(
                 `${WINDOW_EVENTRIX_DEBUGGER_NAME}.getAllEventsListenersCount()`,
@@ -127,8 +134,54 @@ class DebuggerService {
         })
     }
 
-    @fetchToState(STATE_LISTENERS_FETCH, 'stateListeners')
-    getStateListeners() {
+    isJSON = (str) => {
+        if (!str || str.length === 0) return false;
+        const firstChar = str[0];
+        const lastChar = str[str.length - 1];
+        const isObject = firstChar === '{' && lastChar === '}';
+        const isArray = firstChar === '[' && lastChar === ']';
+        return isObject || isArray;
+    }
+
+    emitEvent = (name, { eventName, eventPayload }) => {
+        const parsedEventPayload = this.isJSON(eventPayload) ? JSON.parse(eventPayload) : eventPayload;
+        return new Promise((resolve) => {
+            chrome.devtools.inspectedWindow.eval(
+                `${WINDOW_EVENTRIX_DEBUGGER_NAME}.eventrix.emit('${eventName}', ${eventPayload})`,
+                (result = [], isException) => {
+                    if(isException) {
+                        console.log('error', isException);
+                    } else {
+                        resolve(result || []);
+                    }
+                }
+            );
+        })
+    }
+
+    resetStateHistory = () => {
+        return new Promise((resolve) => {
+            chrome.devtools.inspectedWindow.eval(
+                `${WINDOW_EVENTRIX_DEBUGGER_NAME}.stateHistory = []`,
+                (result = [], isException) => {
+                    resolve([]);
+                }
+            );
+        })
+    }
+
+    resetEventsHistory = () => {
+        return new Promise((resolve) => {
+            chrome.devtools.inspectedWindow.eval(
+                `${WINDOW_EVENTRIX_DEBUGGER_NAME}.eventsHistory = []`,
+                (result = [], isException) => {
+                    resolve([]);
+                }
+            );
+        })
+    }
+
+    getStateListeners = () => {
         return Promise.all([
             this.getReceivers(),
             this.getListeners(),

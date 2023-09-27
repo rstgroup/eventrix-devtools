@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
 import { useEventrixState } from 'eventrix';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Tooltip from '@mui/material/Tooltip';
+import {Stack} from "@mui/material";
 
 const Filters = () => {
     const [filters = {}, setFilters] = useEventrixState('eventsHistoryFilters.filters');
@@ -11,7 +12,7 @@ const Filters = () => {
         setFilters({ ...filters, withoutSetStateEvents: !withoutSetStateEvents });
     }, [filters.withoutSetStateEvents, setFilters]);
     return (
-        <div>
+        <Stack>
             <Tooltip title="Hide events emitted from eventrix stateManager ( setState:* )">
                 <FormControlLabel
                     control={
@@ -25,7 +26,7 @@ const Filters = () => {
                     label="without set state events"
                 />
             </Tooltip>
-        </div>
+        </Stack>
     )
 };
 

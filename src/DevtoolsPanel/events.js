@@ -1,8 +1,10 @@
 export const EVENTS_HISTORY_FETCH = 'Events:history.fetch';
+export const EVENTS_HISTORY_RESET = 'Events:history.reset';
 export const EVENTS_HISTORY_FETCH_SUCCESS = 'Events:history.fetch.success';
 export const EVENTS_HISTORY_FETCH_FAILED = 'Events:history.fetch.failed';
 
 export const STATE_HISTORY_FETCH = 'State:history.fetch';
+export const STATE_HISTORY_RESET = 'State:history.reset';
 export const STATE_HISTORY_FETCH_SUCCESS = 'State:history.fetch.success';
 export const STATE_HISTORY_FETCH_FAILED = 'State:history.fetch.failed';
 
@@ -24,3 +26,6 @@ export const STATE_LISTENERS_FETCH_FAILED = 'StateListeners:fetch.failed';
 
 export const TURN_ON_AUTO_REFRESH_MODE = 'AutoRefreshMode:turnOn';
 export const TURN_OFF_AUTO_REFRESH_MODE = 'AutoRefreshMode:turnOff';
+
+export const RESET_EMITTER = 'RESET_EMITTER';
+export const EMITTER_EMIT = 'EMITTER_EMIT';

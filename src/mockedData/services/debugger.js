@@ -1,10 +1,11 @@
-import { useEventrix, fetchToState, receiver } from 'eventrix';
+import { EventsReceiver, fetchToStateReceiver} from 'eventrix';
 import {
-    EVENTS_HISTORY_FETCH,
+    EMITTER_EMIT,
+    EVENTS_HISTORY_FETCH, EVENTS_HISTORY_RESET,
     LISTENERS_FETCH,
     RECEIVERS_FETCH,
     STATE_FETCH,
-    STATE_HISTORY_FETCH,
+    STATE_HISTORY_FETCH, STATE_HISTORY_RESET,
     STATE_LISTENERS_FETCH,
     TURN_OFF_AUTO_REFRESH_MODE,
     TURN_ON_AUTO_REFRESH_MODE
@@ -14,10 +15,27 @@ import stateHistory from '../stateHistory';
 import currentState from '../currentState';
 import receiversCounts from '../receiversCount';
 import listenersCount from '../listenersCount';
+import {WINDOW_EVENTRIX_DEBUGGER_NAME} from "../../DevtoolsPanel/constants";
 
-@useEventrix
 class DebuggerService {
-    constructor() {
+    constructor({ eventrix }) {
+        this.eventrix = eventrix;
+        this.receivers = [
+            new EventsReceiver(TURN_ON_AUTO_REFRESH_MODE, this.turnOnAutoRefreshMode),
+            new EventsReceiver(TURN_OFF_AUTO_REFRESH_MODE, this.turnOffAutoRefreshMode),
+            new EventsReceiver(EMITTER_EMIT, this.emitEvent),
+            fetchToStateReceiver(EVENTS_HISTORY_FETCH, 'eventsHistory', this.getEventsHistory),
+            fetchToStateReceiver(EVENTS_HISTORY_RESET, 'eventsHistory', this.resetEventsHistory),
+            fetchToStateReceiver(STATE_HISTORY_FETCH, 'stateHistory', this.getStateHistory),
+            fetchToStateReceiver(STATE_HISTORY_RESET, 'stateHistory', this.resetStateHistory),
+            fetchToStateReceiver(STATE_FETCH, 'currentState', this.getCurrentState),
+            fetchToStateReceiver(RECEIVERS_FETCH, 'receivers', this.getReceivers),
+            fetchToStateReceiver(LISTENERS_FETCH, 'listeners', this.getListeners),
+            fetchToStateReceiver(STATE_LISTENERS_FETCH, 'stateListeners', this.getStateListeners),
+        ];
+        this.receivers.forEach(receiver => {
+            this.eventrix.useReceiver(receiver);
+        });
         this.autoRefreshHandler = {
             currentState: null,
             stateHistory: null,
@@ -25,8 +43,7 @@ class DebuggerService {
         };
     }
 
-    @receiver(TURN_ON_AUTO_REFRESH_MODE)
-    turnOnAutoRefreshMode(eventName, eventData, stateManager) {
+    turnOnAutoRefreshMode = (eventName, eventData, stateManager) => {
         const { refreshType } = eventData;
         if (!this.autoRefreshHandler[refreshType]) {
             if (refreshType === 'currentState') {
@@ -48,8 +65,7 @@ class DebuggerService {
         stateManager.setState(`autoRefreshMode.${refreshType}`, true);
     }
 
-    @receiver(TURN_OFF_AUTO_REFRESH_MODE)
-    turnOffAutoRefreshMode(eventName, eventData, stateManager) {
+    turnOffAutoRefreshMode = (eventName, eventData, stateManager) => {
         const { refreshType } = eventData;
         if (this.autoRefreshHandler[refreshType]) {
             clearInterval(this.autoRefreshHandler[refreshType]);
@@ -58,33 +74,39 @@ class DebuggerService {
         stateManager.setState(`autoRefreshMode.${refreshType}`, false);
     }
 
-    @fetchToState(EVENTS_HISTORY_FETCH, 'eventsHistory')
-    getEventsHistory() {
+    getEventsHistory = () => {
         return Promise.resolve(eventsHistory.reverse());
     }
 
-    @fetchToState(STATE_HISTORY_FETCH, 'stateHistory')
-    getStateHistory() {
+    getStateHistory = () => {
         return Promise.resolve(stateHistory.reverse());
     }
 
-    @fetchToState(STATE_FETCH, 'currentState')
-    getCurrentState() {
+    getCurrentState = () => {
         return Promise.resolve(currentState);
     }
 
-    @fetchToState(RECEIVERS_FETCH, 'receivers')
-    getReceivers() {
+    getReceivers = () => {
         return Promise.resolve(receiversCounts);
     }
 
-    @fetchToState(LISTENERS_FETCH, 'listeners')
-    getListeners() {
+    getListeners = () => {
         return Promise.resolve(listenersCount);
     }
 
-    @fetchToState(STATE_LISTENERS_FETCH, 'stateListeners')
-    getStateListeners() {
+    emitEvent = () => {
+        new Promise.resolve(true);
+    }
+
+    resetStateHistory = () => {
+        return Promise.resolve([])
+    }
+
+    resetEventsHistory = () => {
+        return Promise.resolve([])
+    }
+
+    getStateListeners = () => {
         return Promise.all([
             this.getReceivers(),
             this.getListeners(),

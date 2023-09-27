@@ -1,54 +1,112 @@
-import React from 'react';
-import StorageIcon from '@material-ui/icons/Storage';
-import DateRangeIcon from '@material-ui/icons/DateRange';
-import HistoryIcon from '@material-ui/icons/History';
-import ReceiverIcon from '@material-ui/icons/SettingsInputAntenna';
-import ListenerIcon from '@material-ui/icons/WifiTethering';
+import React, {useCallback} from 'react';
 
 import CurrentState from "./modules/CurrentState";
 import StateHistory from "./modules/StateHistory";
-import EventsHistory from "./modules/EventsHistory";
-import Receivers from "./modules/Receivers";
-import Listeners from "./modules/Listeners";
 
 import Route from "./components/Route";
-import RouteLink from "./components/RouteLink/RouteLink";
 import { ROUTES } from "./constants/routes";
-
-import styles from './App.scss';
+import {Stack} from "@mui/material";
+import Menu from "./modules/Menu";
+import Divider from "@mui/material/Divider";
+import StateListenersStats from "./modules/StateListenersStats";
+import StatsBox from "./components/StatsBox";
+import './App.css';
+import {DateRangeIcon, EmitIcon, HistoryIcon, StorageIcon} from "./components/icons";
+import Header from "./components/Header";
+import {useEmit} from "eventrix";
+import {
+    EVENTS_HISTORY_FETCH,
+    RESET_EMITTER,
+    STATE_FETCH,
+    STATE_HISTORY_FETCH,
+    STATE_HISTORY_RESET,
+    EVENTS_HISTORY_RESET
+} from "./events";
+import StateHistoryPreview from "./modules/StateHistory/StateHistoryPreview";
+import StateStats from "./modules/StateHistory/StateStats";
+import EventsHistory from "./modules/EventsHistory";
+import EventsStats from "./modules/EventsHistory/EventsStats";
+import EventsHistoryPreview from "./modules/EventsHistory/EventsHistoryPreview";
+import Emitter from "./modules/Emitter";
 
 const App = () => {
+    const emit = useEmit();
+    const fetchState = useCallback(() => { emit(STATE_FETCH) }, [emit]);
+    const fetchStateHistory = useCallback(() => { emit(STATE_HISTORY_FETCH) }, [emit]);
+    const fetchEventsHistory = useCallback(() => { emit(EVENTS_HISTORY_FETCH) }, [emit]);
+
+    const resetStateHistory = useCallback(() => { emit(STATE_HISTORY_RESET) }, [emit]);
+    const resetEventsHistory = useCallback(() => { emit(EVENTS_HISTORY_RESET) }, [emit]);
+    const resetEmitter = useCallback(() => { emit(RESET_EMITTER) }, [emit]);
+
     return (
-        <div className={styles.container}>
-            <div className={styles.navigation}>
-                <div className={styles.title}>
-                    <h1>Eventrix</h1>
-                    <div>devtools</div>
-                </div>
-                <RouteLink to={ROUTES.CURRENT_STATE} activeClassName={styles.activeMenuItem} className={styles.menuItem}><StorageIcon fontSize="small" /> CURRENT STATE</RouteLink>
-                <RouteLink to={ROUTES.STATE_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}><HistoryIcon fontSize="small" /> STATE HISTORY</RouteLink>
-                <RouteLink to={ROUTES.EVENTS_HISTORY} activeClassName={styles.activeMenuItem} className={styles.menuItem}><DateRangeIcon fontSize="small" /> EVENTS HISTORY</RouteLink>
-                <RouteLink to={ROUTES.RECEIVERS} activeClassName={styles.activeMenuItem} className={styles.menuItem}><ReceiverIcon fontSize="small" /> RECEIVERS</RouteLink>
-                <RouteLink to={ROUTES.LISTENERS} activeClassName={styles.activeMenuItem} className={styles.menuItem}><ListenerIcon fontSize="small" /> LISTENERS</RouteLink>
-            </div>
-            <div className={styles.content}>
+        <Stack direction="row">
+            <Menu />
+            <Divider orientation="vertical" flexItem />
+            <Stack sx={{ width: '100%', height: '100%' }}>
                 <Route name={ROUTES.CURRENT_STATE}>
-                    <CurrentState />
+                    <Header
+                        title="Current state"
+                        icon={<StorageIcon width="26px" />}
+                        refreshAction={fetchState}
+                    />
+                    <Divider />
+                    <Stack direction="row" padding={2} spacing={1}>
+                        <CurrentState />
+                        <StatsBox title="States use stats">
+                            <StateListenersStats />
+                        </StatsBox>
+                    </Stack>
                 </Route>
                 <Route name={ROUTES.STATE_HISTORY}>
-                    <StateHistory />
+                    <Header
+                        title="State history"
+                        icon={<DateRangeIcon width="26px" />}
+                        resetAction={resetStateHistory}
+                        refreshAction={fetchStateHistory}
+                    />
+                    <Divider />
+                    <Stack direction="row" padding={2} spacing={1}>
+                        <StateHistory fetchStateHistory={fetchStateHistory} />
+                        <Stack>
+                            <StatsBox title="State update stats">
+                                <StateStats />
+                            </StatsBox>
+                            <StateHistoryPreview />
+                        </Stack>
+                    </Stack>
                 </Route>
                 <Route name={ROUTES.EVENTS_HISTORY}>
-                    <EventsHistory />
+                    <Header
+                        title="Events history"
+                        icon={<HistoryIcon width="26px" />}
+                        resetAction={resetEventsHistory}
+                        refreshAction={fetchEventsHistory}
+                    />
+                    <Divider />
+                    <Stack direction="row" padding={2} spacing={1}>
+                        <EventsHistory fetchEventsHistory={fetchEventsHistory} />
+                        <Stack>
+                            <StatsBox title="State update stats">
+                                <EventsStats />
+                            </StatsBox>
+                            <EventsHistoryPreview />
+                        </Stack>
+                    </Stack>
                 </Route>
-                <Route name={ROUTES.RECEIVERS}>
-                    <Receivers />
+                <Route name={ROUTES.EMITTER}>
+                    <Header
+                        title="Emitter"
+                        icon={<EmitIcon width="26px" />}
+                        resetAction={resetEmitter}
+                    />
+                    <Divider />
+                    <Stack direction="row" padding={2} spacing={1}>
+                        <Emitter fetchEventsHistory={fetchEventsHistory} />
+                    </Stack>
                 </Route>
-                <Route name={ROUTES.LISTENERS}>
-                    <Listeners />
-                </Route>
-            </div>
-        </div>
+            </Stack>
+        </Stack>
     )
 };
 
